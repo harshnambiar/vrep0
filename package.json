@@ -1,0 +1,21 @@
+{
+  "name": "vrep0",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.2.2",
+    "tailwindcss": "^4.2.2",
+    "vite": "^8.0.1"
+  },
+  "dependencies": {
+    "@vlayer/sdk": "^1.5.1-nightly-20251103-b84a901b51aac170c55042366a1bc2c2ae96148f",
+    "ethers": "^6.16.0",
+    "web3": "^4.16.0"
+  }
+}
