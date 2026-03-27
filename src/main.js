@@ -4,6 +4,12 @@ let currentAccount = null
 
 let currentTab = 'dashboard'
 
+let emailVerified = false;
+let webVerified = true;
+let donationVerified = false;
+let tipVerified = true;
+let endorseVerified = false;
+
 // ====================== HELPERS ======================
 function shortenAddress(addr) {
   return addr ? `${addr.slice(0, 6)}...${addr.slice(-4)}` : ''
@@ -110,116 +116,153 @@ function renderDashboard() {
   `
 }
 
-function renderProofs() {
+function renderFaq() {
   return `
     <div>
       <div class="flex justify-between items-end mb-8">
         <div>
-          <h2 class="text-4xl font-semibold tracking-tighter">Proofs</h2>
-          <p class="text-zinc-400">All generated verifiable proofs</p>
+          <h2 class="text-4xl font-semibold tracking-tighter">FAQ</h2>
+          <p class="text-zinc-400">All you need to know about vRep</p>
         </div>
-        <button onclick="alert('New proof creation flow coming soon 🐐')"
-                class="bg-indigo-600 hover:bg-indigo-500 px-6 py-3 rounded-2xl font-medium flex items-center gap-2 transition-colors">
-          New Proof
-        </button>
-      </div>
 
-      <div class="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden">
-        <table class="w-full">
-          <thead>
-            <tr class="border-b border-zinc-800">
-              <th class="text-left p-6 font-medium text-zinc-400">Proof ID</th>
-              <th class="text-left p-6 font-medium text-zinc-400">Type</th>
-              <th class="text-left p-6 font-medium text-zinc-400">Status</th>
-              <th class="text-left p-6 font-medium text-zinc-400">Generated</th>
-              <th class="text-left p-6 font-medium text-zinc-400">Actions</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-zinc-800">
-            <tr class="hover:bg-zinc-800/50">
-              <td class="p-6 font-mono text-sm">0x8f3a...9d2e</td>
-              <td class="p-6">Price Feed</td>
-              <td class="p-6"><span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-xs">Verified</span></td>
-              <td class="p-6 text-zinc-400 text-sm">2 hours ago</td>
-              <td class="p-6"><button class="text-indigo-400 hover:text-indigo-300">View Proof →</button></td>
-            </tr>
-            <tr class="hover:bg-zinc-800/50">
-              <td class="p-6 font-mono text-sm">0x7b2c...4a1f</td>
-              <td class="p-6">Identity Proof</td>
-              <td class="p-6"><span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-xs">Verified</span></td>
-              <td class="p-6 text-zinc-400 text-sm">Yesterday</td>
-              <td class="p-6"><button class="text-indigo-400 hover:text-indigo-300">View Proof →</button></td>
-            </tr>
-          </tbody>
-        </table>
+      </div>
+      <div class="space-y-4">
+        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 flex gap-6">
+          <div>
+          <p style="color: #50c888;font-size: 1.4em;">What does vRep do?</p>
+           <p> vRep is a Reputation Verifier as a Service (RVaaS). It prompts users to preemptively have their proof of humanity (PoH) verifications done once, so that any subsequent project can simply access those results via zero-knowledge proof mechanisms, instead of making them verify it every time. With many methods of verification, such as Vlayer standard Email and Web Proofs, and more community centric methods like Charitable Donations and Endorsements from Trusted Accounts, vRep seeks to combine security and trust with a community and social responsibilty angle, aiming to bring the entire ecosystem together.</p>
+          </div>
+        </div>
+        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 flex gap-6">
+          <div>
+          <p style="color: #50c888;font-size: 1.4em;">Is vRep safe?</p>
+            <p>vRep is incredibly safe and only uses zk Proofs, facilitated by the Vlayer protocol to deliver your Verification Status to client projects. We also don't store your data on any database or in any offline form.</p>
+          </div>
+        </div>
+        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 flex gap-6">
+          <div>
+          <p style="color: #50c888;font-size: 1.4em;">How much does it cost to use vRep?</p>
+            <p>vRep is free to use for the community. Some methods of verification like Charitable Donations and Tipping require monetary transactions, but it is up to you which methods you want to be verified with. Please note that projects using vRep decide which methods of verification they want to prioritise and vRep simply provides a zk Proof for each of those methods to them. We don't ask or not ask end users to use a particular method of verification.</p>
+          </div>
+        </div>
+        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 flex gap-6">
+          <div>
+          <p style="color: #50c888;font-size: 1.4em;">I am a developer. How do I use the vRep proofs in my code?</p>
+            <p>You just need to use our Solidity library in your Smart Contract. The detailed documentation can be found here.</p>
+          </div>
+        </div>
+        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 flex gap-6">
+          <div>
+          <p style="color: #50c888;font-size: 1.4em;">Which chains does vRep support?</p>
+            <p>Currently, we are in the beta phase and only support the Optimism Sepolia Testnet. Following our mainnet launch, we will also add other EVM chains like Ethereum, Base, Arbitrum, and Sei in the near future.</p>
+          </div>
+        </div>
       </div>
     </div>
   `
 }
 
-function renderAccount() {
+function renderProofs() {
+
   return `
     <div>
-      <h2 class="text-4xl font-semibold tracking-tighter mb-8">Data Sources</h2>
+      <h2 class="text-4xl font-semibold tracking-tighter mb-8">Account Status</h2>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
           <div class="flex justify-between items-start">
             <div>
-              <div class="text-emerald-400 font-medium">Chainlink</div>
-              <div class="text-2xl font-semibold mt-2">ETH / USD</div>
+
+            ${emailVerified ? `<div class="text-emerald-400 font-medium">Email Proof</div>
+              <div class="text-2xl font-semibold mt-2">Email Proofs by Vlayer</div>
             </div>
-            <span class="px-4 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full">Pending</span>
+            <span class="px-4 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full">Verified</span>
           </div>
-          <div class="mt-10 text-zinc-400 text-sm">Last verified • 3 minutes ago</div>
+          <div class="mt-10 text-zinc-400 text-sm">No further action required</div>`
+              : `<div class="text-amber-400 font-medium">Email Proof</div>
+              <div class="text-2xl font-semibold mt-2">Email Proofs by Vlayer</div>
+            </div>
+            <span class="px-4 py-1 bg-amber-500/10 text-amber-400 text-xs rounded-full">Pending</span>
+          </div>
+          <div class="mt-10 text-zinc-400 text-sm" onclick="coming()" style="cursor: pointer;">Get Verified Now</div>`
+            }
+
         </div>
 
         <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
           <div class="flex justify-between items-start">
             <div>
-              <div class="text-amber-400 font-medium">API Oracle</div>
-              <div class="text-2xl font-semibold mt-2">Weather Data</div>
+
+            ${webVerified ? `<div class="text-emerald-400 font-medium">Web Proof</div>
+              <div class="text-2xl font-semibold mt-2">Web Proofs by Vlayer</div>
+            </div>
+            <span class="px-4 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full">Verified</span>
+          </div>
+          <div class="mt-10 text-zinc-400 text-sm">No further action required</div>`
+              : `<div class="text-amber-400 font-medium">Web Proof</div>
+              <div class="text-2xl font-semibold mt-2">Web Proofs by Vlayer</div>
             </div>
             <span class="px-4 py-1 bg-amber-500/10 text-amber-400 text-xs rounded-full">Pending</span>
           </div>
-          <div class="mt-10 text-zinc-400 text-sm">Last verified • 2 hours ago</div>
+          <div class="mt-10 text-zinc-400 text-sm" onclick="coming()" style="cursor: pointer;">Get Verified Now</div>`
+            }
         </div>
 
 
       <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
           <div class="flex justify-between items-start">
             <div>
-              <div class="text-amber-400 font-medium">API Oracle</div>
-              <div class="text-2xl font-semibold mt-2">Weather Data</div>
+              ${endorseVerified ? `<div class="text-emerald-400 font-medium">Endorsed</div>
+              <div class="text-2xl font-semibold mt-2">Get Endorsed by Trusted Accounts</div>
+            </div>
+            <span class="px-4 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full">Verified</span>
+          </div>
+          <div class="mt-10 text-zinc-400 text-sm">No further action required</div>`
+              : `<div class="text-amber-400 font-medium">Endorsed</div>
+              <div class="text-2xl font-semibold mt-2">Get Endorsed by Trusted Accounts</div>
             </div>
             <span class="px-4 py-1 bg-amber-500/10 text-amber-400 text-xs rounded-full">Pending</span>
           </div>
-          <div class="mt-10 text-zinc-400 text-sm">Last verified • 2 hours ago</div>
+          <div class="mt-10 text-zinc-400 text-sm" onclick="coming()" style="cursor: pointer;">Get Verified Now</div>`
+            }
         </div>
 
 
       <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
           <div class="flex justify-between items-start">
             <div>
-              <div class="text-amber-400 font-medium">API Oracle</div>
-              <div class="text-2xl font-semibold mt-2">Weather Data</div>
+               ${tipVerified ? `<div class="text-emerald-400 font-medium">One-Time Tip</div>
+              <div class="text-2xl font-semibold mt-2">Make a One-Time Tip to vRep</div>
+            </div>
+            <span class="px-4 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full">Verified</span>
+          </div>
+          <div class="mt-10 text-zinc-400 text-sm">No further action required</div>`
+              : `<div class="text-amber-400 font-medium">One-Time Tip</div>
+              <div class="text-2xl font-semibold mt-2">Make a One-Time Tip to vRep</div>
             </div>
             <span class="px-4 py-1 bg-amber-500/10 text-amber-400 text-xs rounded-full">Pending</span>
           </div>
-          <div class="mt-10 text-zinc-400 text-sm">Last verified • 2 hours ago</div>
+          <div class="mt-10 text-zinc-400 text-sm" onclick="coming()" style="cursor: pointer;">Get Verified Now</div>`
+            }
         </div>
 
 
       <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
           <div class="flex justify-between items-start">
             <div>
-              <div class="text-amber-400 font-medium">API Oracle</div>
-              <div class="text-2xl font-semibold mt-2">Weather Data</div>
+               ${donationVerified ? `<div class="text-emerald-400 font-medium">Charitable Donations</div>
+              <div class="text-2xl font-semibold mt-2">Donate to Charities that Matter</div>
+            </div>
+            <span class="px-4 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full">Verified</span>
+          </div>
+          <div class="mt-10 text-zinc-400 text-sm">No further action required</div>`
+              : `<div class="text-amber-400 font-medium">Charitable Donations</div>
+              <div class="text-2xl font-semibold mt-2">Donate to Charities that Matter</div>
             </div>
             <span class="px-4 py-1 bg-amber-500/10 text-amber-400 text-xs rounded-full">Coming Soon</span>
           </div>
-          <div class="mt-10 text-zinc-400 text-sm">Last verified • 2 hours ago</div>
-        </div>
+          <div class="mt-10 text-zinc-400 text-sm" onclick="coming()" style="cursor: pointer;">Stay Tuned</div>`
+            }
       </div>
 
 
@@ -279,7 +322,7 @@ function renderUI() {
           <div class="flex items-center gap-8 text-sm font-medium">
             <a href="#" onclick="switchTab('dashboard')" class="tab-link text-white" id="tab-dashboard">Dashboard</a>
             <a href="#" onclick="switchTab('proofs')" class="tab-link text-zinc-400 hover:text-zinc-200" id="tab-proofs">Proofs</a>
-            <a href="#" onclick="switchTab('account')" class="tab-link text-zinc-400 hover:text-zinc-200" id="tab-account">Account</a>
+            <a href="#" onclick="switchTab('faq')" class="tab-link text-zinc-400 hover:text-zinc-200" id="tab-account">FAQ</a>
             <a href="#" onclick="switchTab('about')" class="tab-link text-zinc-400 hover:text-zinc-200" id="tab-about">About</a>
           </div>
 
@@ -327,8 +370,8 @@ window.switchTab = function(tab) {
     case 'proofs':
       html = renderProofs()
       break
-    case 'account':
-      html = renderAccount()
+    case 'faq':
+      html = renderFaq()
       break
     case 'about':
       html = renderAbout()
