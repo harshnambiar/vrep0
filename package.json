@@ -14,6 +14,7 @@
     "vite": "^8.0.1"
   },
   "dependencies": {
+    "@getvouch/sdk": "^0.1.7",
     "@vlayer/sdk": "^1.5.1-nightly-20251103-b84a901b51aac170c55042366a1bc2c2ae96148f",
     "ethers": "^6.16.0",
     "web3": "^4.16.0"

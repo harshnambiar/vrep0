@@ -1,11 +1,15 @@
+import './style.css';
+import { createVlayerClient, createExtensionWebProofProvider } from '@vlayer/sdk'
+import { Vouch } from '@getvouch/sdk';
+
 
 const app = document.getElementById('app')
 let currentAccount = null
 
 let currentTab = 'dashboard'
 
-let emailVerified = false;
-let webVerified = true;
+let emailVerified = true;
+let linkedinVerified = false;
 let donationVerified = false;
 let tipVerified = true;
 let endorseVerified = false;
@@ -74,6 +78,69 @@ function disconnectWallet() {
   currentAccount = null
   renderUI()
 }
+
+// ====================== VERIFICATION FUNCTIONS =====================
+async function verifyLinkedin() {
+  const webProofProvider = createExtensionWebProofProvider();
+
+  const vlayer = createVlayerClient({
+    webProofProvider: webProofProvider,
+  });
+
+  const cid = import.meta.env.VITE_VL_CUSTOMER_ID;
+  const apiKey = import.meta.env.VITE_VL_API_KEY;
+  const dataSource = import.meta.env.VITE_LINKEDIN_DATA_SOURCE_ID;
+
+  // Create Vouch instance just for reference (optional)
+  const vouch = new Vouch({
+    customerId: cid,
+    apiKey: apiKey,
+  });
+  console.log('Vouch instance created:', vouch);
+
+  try {
+    // Manually call the endpoint through the proxy
+    const creds = btoa(`${apiKey}:`);
+    const response = await fetch('/api/vouch/api/proof-request', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-client-id': cid,
+        'Authorization': `Bearer ${creds}`,   // or however the SDK sends it (try 'Basic' if needed)
+      },
+      body: JSON.stringify({
+        datasourceId: dataSource,
+        customerId: cid,
+        inputs: "{}",
+        redirectBackUrl: "http://localhost:5173",
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Vouch API error:', response.status, errorText);
+      throw new Error(`HTTP ${response.status}: ${errorText}`);
+    }
+
+    const data = await response.json();
+    const { verificationUrl, requestId } = data;
+
+    console.log("Verification URL:", verificationUrl);
+    console.log("Request ID:", requestId);
+
+    if (verificationUrl) {
+      window.location.href = verificationUrl;
+    } else {
+      console.error("No verificationUrl in response");
+    }
+  } catch (error) {
+    console.log(error);
+    console.error("Error calling Vouch API:", error);
+    alert("Failed to start LinkedIn verification. Check console for details.");
+  }
+}
+
+window.verifyLinkedin = verifyLinkedin;
 
 // ====================== PAGE RENDER FUNCTIONS ======================
 
@@ -193,18 +260,18 @@ function renderProofs() {
           <div class="flex justify-between items-start">
             <div>
 
-            ${webVerified ? `<div class="text-emerald-400 font-medium">Web Proof</div>
-              <div class="text-2xl font-semibold mt-2">Web Proofs by Vlayer</div>
+            ${linkedinVerified ? `<div class="text-emerald-400 font-medium">LinkedIn Proof</div>
+              <div class="text-2xl font-semibold mt-2">LinkedId Proof by Vlayer</div>
             </div>
             <span class="px-4 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full">Verified</span>
           </div>
           <div class="mt-10 text-zinc-400 text-sm">No further action required</div>`
-              : `<div class="text-amber-400 font-medium">Web Proof</div>
-              <div class="text-2xl font-semibold mt-2">Web Proofs by Vlayer</div>
+              : `<div class="text-amber-400 font-medium">LinkedIn Proof</div>
+              <div class="text-2xl font-semibold mt-2">LinkedIn Proof by Vlayer</div>
             </div>
             <span class="px-4 py-1 bg-amber-500/10 text-amber-400 text-xs rounded-full">Pending</span>
           </div>
-          <div class="mt-10 text-zinc-400 text-sm" onclick="coming()" style="cursor: pointer;">Get Verified Now</div>`
+          <div class="mt-10 text-zinc-400 text-sm" onclick="verifyLinkedin()" style="cursor: pointer;">Get Verified Now</div>`
             }
         </div>
 
@@ -285,7 +352,7 @@ function renderAbout() {
         <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 flex gap-6">
           <div class="w-2 h-2 mt-2.5 bg-emerald-500 rounded-full flex-shrink-0"></div>
           <div>
-            With numerous ways to increase the account reputation, like Email and Web Proofs, donations to charitable organizations, one-time tips to the vRep Treasury, and endorsements from verified wallets, vRep ensures to provide an unadulterated picture to client projects about the authenticity and reputation of the accounts interacting with their Smart Contracts.
+            With numerous ways to increase the account reputation, like Email and LinkedIn Proofs, donations to charitable organizations, one-time tips to the vRep Treasury, and endorsements from verified wallets, vRep ensures to provide an unadulterated picture to client projects about the authenticity and reputation of the accounts interacting with their Smart Contracts.
           </div>
         </div>
 
