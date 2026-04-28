@@ -2,6 +2,8 @@ import './style.css';
 import { createVlayerClient, createExtensionWebProofProvider } from '@vlayer/sdk'
 import { Vouch } from '@getvouch/sdk';
 
+const API_BASE_URL = 'http://localhost:5000/api'; // Update if needed
+
 
 const app = document.getElementById('app')
 let currentAccount = null
@@ -81,58 +83,16 @@ function disconnectWallet() {
 
 // ====================== VERIFICATION FUNCTIONS =====================
 async function verifyLinkedin() {
-  const webProofProvider = createExtensionWebProofProvider();
-
-  const vlayer = createVlayerClient({
-    webProofProvider: webProofProvider,
-  });
-
-  const cid = import.meta.env.VITE_VL_CUSTOMER_ID;
-  const apiKey = import.meta.env.VITE_VL_API_KEY;
-  const dataSource = import.meta.env.VITE_LINKEDIN_DATA_SOURCE_ID;
-
-  // Create Vouch instance just for reference (optional)
-  const vouch = new Vouch({
-    customerId: cid,
-    apiKey: apiKey,
-  });
-  console.log('Vouch instance created:', vouch);
+  console.log('Initializing LinkedIn verification..');
 
   try {
-    // Manually call the endpoint through the proxy
-    const creds = btoa(`${apiKey}:`);
-    const response = await fetch('/api/vouch/api/proof-request', {
-      method: 'POST',
+    const response = await fetch(`${API_BASE_URL}/vlayer/linkedin/`, {
+      method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
-        'x-client-id': cid,
-        'Authorization': `Bearer ${creds}`,   // or however the SDK sends it (try 'Basic' if needed)
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        datasourceId: dataSource,
-        customerId: cid,
-        inputs: "{}",
-        redirectBackUrl: "http://localhost:5173",
-      }),
     });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Vouch API error:', response.status, errorText);
-      throw new Error(`HTTP ${response.status}: ${errorText}`);
-    }
-
-    const data = await response.json();
-    const { verificationUrl, requestId } = data;
-
-    console.log("Verification URL:", verificationUrl);
-    console.log("Request ID:", requestId);
-
-    if (verificationUrl) {
-      window.location.href = verificationUrl;
-    } else {
-      console.error("No verificationUrl in response");
-    }
+    console.log(response);
   } catch (error) {
     console.log(error);
     console.error("Error calling Vouch API:", error);
