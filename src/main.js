@@ -10,7 +10,8 @@ let currentAccount = null
 
 let currentTab = 'dashboard'
 
-let emailVerified = true;
+let githubVerified = false;
+let xVerified = false;
 let linkedinVerified = false;
 let donationVerified = false;
 let tipVerified = true;
@@ -92,7 +93,9 @@ async function verifyLinkedin() {
         'Content-Type': 'application/json'
       },
     });
-    console.log(response);
+    const result = await response.json();
+    console.log(result);
+    window.location.href = result.vurl;
   } catch (error) {
     console.log(error);
     console.error("Error calling Vouch API:", error);
@@ -101,6 +104,50 @@ async function verifyLinkedin() {
 }
 
 window.verifyLinkedin = verifyLinkedin;
+
+
+async function verifyGithub() {
+  console.log('Initializing GitHub verification..');
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/vlayer/github/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+    const result = await response.json();
+    window.location.href = result.vurl;
+  } catch (error) {
+    console.log(error);
+    console.error("Error calling Vouch API:", error);
+    alert("Failed to start GitHub verification. Check console for details.");
+  }
+}
+
+window.verifyGithub = verifyGithub;
+
+async function verifyTwitter() {
+  console.log('Initializing X verification..');
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/vlayer/x/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+    const result = await response.json();
+    console.log(result);
+    window.location.href = result.vurl;
+  } catch (error) {
+    console.log(error);
+    console.error("Error calling Vouch API:", error);
+    alert("Failed to start X verification. Check console for details.");
+  }
+}
+
+window.verifyTwitter = verifyTwitter;
 
 // ====================== PAGE RENDER FUNCTIONS ======================
 
@@ -200,18 +247,18 @@ function renderProofs() {
           <div class="flex justify-between items-start">
             <div>
 
-            ${emailVerified ? `<div class="text-emerald-400 font-medium">Email Proof</div>
-              <div class="text-2xl font-semibold mt-2">Email Proofs by Vlayer</div>
+            ${xVerified ? `<div class="text-emerald-400 font-medium">X Proof</div>
+              <div class="text-2xl font-semibold mt-2">X Verification by Vlayer</div>
             </div>
             <span class="px-4 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full">Verified</span>
           </div>
           <div class="mt-10 text-zinc-400 text-sm">No further action required</div>`
-              : `<div class="text-amber-400 font-medium">Email Proof</div>
-              <div class="text-2xl font-semibold mt-2">Email Proofs by Vlayer</div>
+              : `<div class="text-amber-400 font-medium">X Proof</div>
+              <div class="text-2xl font-semibold mt-2">X Verification by Vlayer</div>
             </div>
             <span class="px-4 py-1 bg-amber-500/10 text-amber-400 text-xs rounded-full">Pending</span>
           </div>
-          <div class="mt-10 text-zinc-400 text-sm" onclick="coming()" style="cursor: pointer;">Get Verified Now</div>`
+          <div class="mt-10 text-zinc-400 text-sm" onclick="verifyTwitter()" style="cursor: pointer;">Get Verified Now</div>`
             }
 
         </div>
@@ -232,6 +279,25 @@ function renderProofs() {
             <span class="px-4 py-1 bg-amber-500/10 text-amber-400 text-xs rounded-full">Pending</span>
           </div>
           <div class="mt-10 text-zinc-400 text-sm" onclick="verifyLinkedin()" style="cursor: pointer;">Get Verified Now</div>`
+            }
+        </div>
+        
+        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
+          <div class="flex justify-between items-start">
+            <div>
+
+            ${githubVerified ? `<div class="text-emerald-400 font-medium">GitHub Proof</div>
+              <div class="text-2xl font-semibold mt-2">GitHub Verification by Vlayer</div>
+            </div>
+            <span class="px-4 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full">Verified</span>
+          </div>
+          <div class="mt-10 text-zinc-400 text-sm">No further action required</div>`
+              : `<div class="text-amber-400 font-medium">GitHub Proof</div>
+              <div class="text-2xl font-semibold mt-2">GitHub Verification by Vlayer</div>
+            </div>
+            <span class="px-4 py-1 bg-amber-500/10 text-amber-400 text-xs rounded-full">Pending</span>
+          </div>
+          <div class="mt-10 text-zinc-400 text-sm" onclick="verifyGithub()" style="cursor: pointer;">Get Verified Now</div>`
             }
         </div>
 
