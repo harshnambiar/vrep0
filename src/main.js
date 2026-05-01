@@ -166,19 +166,16 @@ function renderDashboard() {
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
         <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 hover:border-indigo-500/40 transition-all">
-          <div class="text-zinc-400 text-sm font-medium">ACTIVE PROOFS</div>
-          <div class="text-6xl font-semibold tracking-tighter mt-4">142</div>
-          <div class="text-emerald-400 text-sm mt-2">↑ 23 today</div>
+          <div class="text-zinc-400 text-sm font-medium">Verify Multiple Ways</div>
+          <div class="text-2xl font-semibold tracking-tighter mt-4">vRep supports over a dozen methods of verification. Choose what you are comfortable with.</div>
         </div>
         <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 hover:border-indigo-500/40 transition-all">
-          <div class="text-zinc-400 text-sm font-medium">VERIFIED SOURCES</div>
-          <div class="text-6xl font-semibold tracking-tighter mt-4">27</div>
-          <div class="text-emerald-400 text-sm mt-2">3 this week</div>
+          <div class="text-zinc-400 text-sm font-medium">Powered by vLayer</div>
+          <div class="text-2xl font-semibold tracking-tighter mt-4">Built with the best zk and privacy tech.</div>
         </div>
         <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 hover:border-indigo-500/40 transition-all">
-          <div class="text-zinc-400 text-sm font-medium">ZK PROOFS GENERATED</div>
-          <div class="text-6xl font-semibold tracking-tighter mt-4">8.4k</div>
-          <div class="text-emerald-400 text-sm mt-2">this month</div>
+          <div class="text-zinc-400 text-sm font-medium">Secure and Private</div>
+          <div class="text-2xl font-semibold tracking-tighter mt-4">No one gets to see your accounts. Only YOU know.</div>
         </div>
       </div>
 
@@ -204,7 +201,7 @@ function renderFaq() {
         <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 flex gap-6">
           <div>
           <p style="color: #50c888;font-size: 1.4em;">What does vRep do?</p>
-           <p> vRep is a Reputation Verifier as a Service (RVaaS). It prompts users to preemptively have their proof of humanity (PoH) verifications done once, so that any subsequent project can simply access those results via zero-knowledge proof mechanisms, instead of making them verify it every time. With many methods of verification, such as Vlayer standard Email and Web Proofs, and more community centric methods like Charitable Donations and Endorsements from Trusted Accounts, vRep seeks to combine security and trust with a community and social responsibilty angle, aiming to bring the entire ecosystem together.</p>
+           <p> vRep is a Reputation Verifier as a Service (RVaaS). It prompts users to preemptively have their proof of humanity (PoH) verifications done once, so that any subsequent project can simply access those results via zero-knowledge proof mechanisms, instead of making them verify it every time. With many methods of verification, such as Vlayer standard GitHub and LinkedIn Proofs, and more community centric methods like Charitable Donations and Endorsements from Trusted Accounts, vRep seeks to combine security and trust with a community and social responsibilty angle, aiming to bring the entire ecosystem together.</p>
           </div>
         </div>
         <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 flex gap-6">
@@ -378,14 +375,21 @@ function renderAbout() {
         <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 flex gap-6">
           <div class="w-2 h-2 mt-2.5 bg-emerald-500 rounded-full flex-shrink-0"></div>
           <div>
-            With numerous ways to increase the account reputation, like Email and LinkedIn Proofs, donations to charitable organizations, one-time tips to the vRep Treasury, and endorsements from verified wallets, vRep ensures to provide an unadulterated picture to client projects about the authenticity and reputation of the accounts interacting with their Smart Contracts.
+            With numerous ways to increase the account reputation, like GitHub and LinkedIn Proofs, donations to charitable organizations, one-time tips to the vRep Treasury, and endorsements from verified wallets, vRep ensures to provide an unadulterated picture to client projects about the authenticity and reputation of the accounts interacting with their Smart Contracts.
           </div>
         </div>
 
         <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 flex gap-6">
           <div class="w-2 h-2 mt-2.5 bg-emerald-500 rounded-full flex-shrink-0"></div>
           <div>
-            vRep functions can directly be called from Client Smart Contracts, and they integrate seamlessly with your code. Currently on the Optimism Sepolia Testnet, try it <a style="cursor:pointer;" onclick="switchTab('proofs')">NOW</a>.
+            vRep functions can directly be called from Client Smart Contracts, and they integrate seamlessly with your code. Apply for a waitlist slot  <a style="cursor:pointer; color: cyan" href="mailto:resurgencelabs@gmail.com" target="_blank">here</a>.
+          </div>
+        </div>
+
+        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 flex gap-6">
+          <div class="w-2 h-2 mt-2.5 bg-emerald-500 rounded-full flex-shrink-0"></div>
+          <div>
+            vRep is built and maintained by <a href="https://x.com/resurgencelabs" target="_blank" style="cursor:pointer;color: cyan">Resurgence Labs</a>, who are also the creators of <a href="https://qshield.live/" target="_blank" style="cursor:pointer;color: cyan;">QShield</a>, a multichain encrypted blockchain entry service.
           </div>
         </div>
 
@@ -408,7 +412,6 @@ function renderUI() {
             <div class="w-9 h-9 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-2xl flex items-center justify-center font-bold text-white text-2xl shadow-inner">V</div>
             <div>
               <span class="font-semibold tracking-tighter text-3xl">vrep</span>
-              <span class="text-xs text-zinc-500 ml-1.5 align-super">vlayer</span>
             </div>
           </div>
 
@@ -443,6 +446,28 @@ function renderUI() {
       <div class="max-w-7xl mx-auto px-6 py-10" id="main-content">
         <!-- Content injected by switchTab -->
       </div>
+      <!-- Footer -->
+      <footer class="mt-auto border-t border-zinc-800 bg-zinc-950">
+        <div class="max-w-7xl mx-auto px-6 py-8">
+          <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+              <div class="w-7 h-7 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-xl flex items-center justify-center font-bold text-white text-lg">V</div>
+              <span class="text-zinc-400 text-sm">© 2026 vRep by
+                <a href="https://x.com/resurgencelabs" target="_blank" class="text-indigo-400 hover:text-indigo-300 transition-colors">Resurgence Labs</a>
+              </span>
+            </div>
+            <div class="flex items-center gap-6 text-sm">
+              <a href="https://qshield.live/" target="_blank" class="text-zinc-400 hover:text-zinc-200 transition-colors">QShield</a>
+              <a href="mailto:resurgencelabs@gmail.com" class="text-zinc-400 hover:text-zinc-200 transition-colors">Contact</a>
+              <a href="#" onclick="switchTab('faq')" class="text-zinc-400 hover:text-zinc-200 transition-colors">Docs</a>
+              <div class="flex items-center gap-2 px-3 py-1 bg-zinc-900 border border-zinc-800 rounded-full text-xs">
+                <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
+                <span class="text-emerald-400">Powered by vLayer</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   `
 
@@ -461,7 +486,9 @@ window.switchTab = function(tab) {
       html = renderDashboard()
       break
     case 'proofs':
-      html = renderProofs()
+      //html = renderProofs()
+      alert("Coming Soon! Join the waitlist.")
+      html = renderDashboard()
       break
     case 'faq':
       html = renderFaq()
