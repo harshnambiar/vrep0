@@ -219,7 +219,7 @@ function renderFaq() {
         <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 flex gap-6">
           <div>
           <p style="color: #50c888;font-size: 1.4em;">I am a developer. How do I use the vRep proofs in my code?</p>
-            <p>You just need to use our Solidity library in your Smart Contract. The detailed documentation can be found here.</p>
+            <p>You just need to use our Solidity library in your Smart Contract. The detailed documentation will be available here soon.</p>
           </div>
         </div>
         <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 flex gap-6">
